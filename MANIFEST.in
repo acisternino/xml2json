@@ -1,0 +1,7 @@
+include distribute_setup.py
+include MANIFEST.in
+include README.rst
+include LICENSE.txt
+recursive-include docs *
+prune docs/_build
+prune dist
