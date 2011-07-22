@@ -134,14 +134,16 @@ def parse_root(source):
             doc[qn.localname] = body = OrderedMultiMap()
 
             # the "schema" key contains the namespace URI of the root element
-            body["schema"] = qn.namespace
+            if qn.namespace:
+                body["schema"] = qn.namespace
 
             # fix default namespace bad key
-            nsmap = OrderedMultiMap(elem.nsmap)
-            if None in nsmap:
-                nsmap["__default__"] = nsmap[None]
-                del nsmap[None]
-            body["nsmap"] = nsmap
+            if elem.nsmap:
+                nsmap = OrderedMultiMap(elem.nsmap)
+                if None in nsmap:
+                    nsmap["__default__"] = nsmap[None]
+                    del nsmap[None]
+                body["nsmap"] = nsmap
 
             # root element attributes
             if elem.attrib:
