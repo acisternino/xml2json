@@ -23,7 +23,7 @@
 
 import unittest, StringIO
 
-from jsonslicer import *
+from xml2json import *
 
 class RootElementTests(unittest.TestCase):
 
