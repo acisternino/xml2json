@@ -141,3 +141,20 @@ class SliceElementTests(unittest.TestCase):
             self.assertEqual(len(json_elem), 1)
             self.assertEqual(json_elem.a.body().b[1].attr("att"), "val")
         parse_element(cb_func, StringIO.StringIO('<r><a><b>LINE_B</b><b att="val">LINE2</b></a></r>'), "a")
+
+    def test_simple_hierachy_omitting_ns(self):
+        """very simple hierarchy omitting namespaces
+        """
+        def cb_func(json_elem):
+            self.assertEqual(len(json_elem), 1)
+            self.assertEqual(json_elem.a.ns(), None)
+            self.assertEqual(json_elem.a.body().b.body(), "LINE")
+        parse_element(cb_func, StringIO.StringIO('<r xmlns:nsa="urn:a"><nsa:a><nsa:b>LINE</nsa:b></nsa:a></r>'), "{urn:a}a", dump_ns = False)
+
+    def test_hierachy_with_ns(self):
+        """deeper hierarchy with namespaces
+        """
+        def cb_func(json_elem):
+            self.assertEqual(len(json_elem), 1)
+            self.assertEqual(json_elem.a.body().b.ns(), "urn:b")
+        parse_element(cb_func, StringIO.StringIO('<r xmlns:nsa="urn:a" xmlns:nsb="urn:b"><nsa:a><nsb:b>LINE</nsb:b></nsa:a></r>'), "{urn:a}a")

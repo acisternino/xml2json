@@ -76,7 +76,7 @@ class OrderedMultiMap(collections.OrderedDict):
 # @param dictionary The top-level dictionary used to contain the xml element information.
 # @param dump_ns Wether to add namespace information to the document.
 
-def _build_json(element, dictionary, dump_ns=True):
+def _build_json(element, dictionary, dump_ns):
     """Converts an lxml.etree.Element instance to a JSON data structure
        containing the same information.
     """
@@ -103,7 +103,7 @@ def _build_json(element, dictionary, dump_ns=True):
 
         for child in element:
             # recurse into children
-            _build_json(child, tmp["__body__"])
+            _build_json(child, tmp["__body__"], dump_ns)
 
     else:
         # element with text and children, not allowed
@@ -177,7 +177,7 @@ def parse_element(func, source, element, dump_ns=True, jsonifier=_build_json):
         doc = OrderedMultiMap()
 
         # convert Element to JSON
-        jsonifier(elem, doc)
+        jsonifier(elem, doc, dump_ns)
 
         # do something with fragment
         try:
